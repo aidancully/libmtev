@@ -40,16 +40,30 @@
 #include <sys/time.h>
 #include <sys/socket.h>
 
+/* "read-available" event on event->fd */
 #define EVENTER_READ             0x01
+/* "write-available" event on event->fd */
 #define EVENTER_WRITE            0x02
+/* "exceptional" event on event->fd */
 #define EVENTER_EXCEPTION        0x04
+/* event->whence elapsed */
 #define EVENTER_TIMER            0x08
+/* asynchronous thread, asks to do work */
 #define EVENTER_ASYNCH_WORK      0x10
+/* asynchronous thread, asks to clean up (timed out) */
 #define EVENTER_ASYNCH_CLEANUP   0x20
+/* returned to synchronous thread */
 #define EVENTER_ASYNCH           (EVENTER_ASYNCH_WORK | EVENTER_ASYNCH_CLEANUP)
+/* called every time through the eventer loop */
 #define EVENTER_RECURRENT        0x80
+/* the following are means of cancelling active jobq jobs */
+/* timeout calls a siglongjmp() in the jobq thread for the asynch function. */
 #define EVENTER_EVIL_BRUTAL     0x100
+/* using pthread_cancel to stop the active jobq.
+ * thread cancel-state is PTHREAD_CANCEL_DEFERRED. */
 #define EVENTER_CANCEL_DEFERRED 0x200
+/* using pthread_cancel to stop the active jobq.
+ * thread cancel-state is PTHREAD_CANCEL_ASYNCHRONOUS. */
 #define EVENTER_CANCEL_ASYNCH   0x400
 #define EVENTER_CANCEL          (EVENTER_CANCEL_DEFERRED|EVENTER_CANCEL_ASYNCH)
 

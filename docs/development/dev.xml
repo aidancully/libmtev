@@ -12,6 +12,8 @@
   <section>
     <title>Hooks</title>
     <xi:include href="docs/utils_noit_hooks_h.xml"/>
+    <title>Eventer</title>
+    <xi:include href="docs/eventer_h.xml"/>
   </section>
 </chapter>
 </part>

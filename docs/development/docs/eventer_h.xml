@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="http://docbook.org/xml/5.0/rng/docbookxi.rng" schematypens="http://relaxng.org/ns/structure/1.0"?>
+<?xml-model href="http://docbook.org/xml/5.0/rng/docbook.rng" type="application/xml" schematypens="http://purl.oclc.org/dsdl/schematron"?>
+<section xmlns="http://docbook.org/ns/docbook"
+      xmlns:xi="http://www.w3.org/2001/XInclude"
+      xmlns:xlink="http://www.w3.org/1999/xlink"
+      version="5.0">
+ <title>Eventer</title>
+ <para>Mtev provides an Inversion-of-Control framework for executing
+ user-defined callback functions in an event-driven fashion. The
+ framework defines two types of callbacks:</para>
+ <orderedlist>
+  <listitem><para>Non-blocking event-handling
+  functions;</para></listitem>
+  <listitem><para>Asynchronous execution functions.</para></listitem>
+ </orderedlist>
+ <para>This framework intends to make it easy to integrate both
+ syncrhronous- and asynchronous-style code to develop your
+ application:</para>
+ <unorderedlist>
+  <listitem><para>When possible, express your design using
+  non-blocking event callback functions.</para></listitem>
+  <listitem><para>When necessary, execute blocking code using
+  synchronous execution facilities.</para></listitem>
+ </unorderedlist>
+ <para>Note that we prefer to use the non-blocking facilities over the
+ blocking facilities. For one thing, the non-blocking facilities
+ impose less execution overhead for execution. (The reasons for this
+ will be described in more detail, below.) For another, including
+ blocking facilities in the sorts of real-time systems that Mtev
+ supports requires some facility to enforce that the blocking callback
+ completes execution within some time constraint, which can complicate
+ the design of your blocking routines.</para>
+ <section><title>General Usage</title>
+  <para>A callback is passed to the Mtev eventer framework via an
+  <type>eventer_t</type> control structure. Create an
+  <type>eventer_t</type> instance by calling
+  <function>eventer_alloc</function>, schedule it to be called via
+  <function>eventer_add</function>, cancel a pending execution via
+  <function>eventer_remove</function>, and destroy the instance with
+  <function>eventer_free</function>.</para>
+  <para><funcsynopsis><funcprototype>
+   <funcdef>eventer_t <function>eventer_alloc</function>
+   <void />
+   <funcprototype/></funcsynopsis> Allocates and partially-constructs
+   an <type>eventer_t</type> instance. The caller is responsible for
+   filling the remainder of the structure before giving ownership of
+   the callback structure to the eventer framework via
+   <function>eventer_add</function>. How to fill in the returned
+   <type>eventer_t</type> depends on the callback type, and will be
+   described in more detail below.
+  </para>
+ </section>
+</section>
