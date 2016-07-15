@@ -138,7 +138,7 @@ static void
 mtev_init_globals() {
   eventer_init_globals();
   eventer_jobq_init_globals();
-  mtev_capabilities_init_globals();
+  /* mtev_capabilities_init_globals(); */
   mtev_conf_init_globals();
   mtev_dso_init_globals();
   mtev_http_rest_init_globals();

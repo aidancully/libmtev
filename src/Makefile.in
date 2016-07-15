@@ -1,4 +1,4 @@
-.SUFFIXES: .lo .re .c
+.SUFFIXES: .lo .re .c .cpp
 
 Q=
 ifeq ($(V),)
@@ -26,6 +26,7 @@ top_srcdir=@top_srcdir@
 MODULES_DIR=@MODULES_DIR@
 
 CC=@CC@
+CXX=@CXX@
 SHLD=@SHLD@
 CPPFLAGS=-I$(top_srcdir)/src -I$(top_srcdir)/src/json-lib \
 	-I$(top_srcdir)/src/utils @CPPFLAGS@
@@ -142,6 +143,7 @@ LIBMTEV_OBJS=mtev_main.lo mtev_listener.lo mtev_cluster.lo \
 	mtev_reverse_socket.lo \
 	mtev_capabilities_listener.lo mtev_dso.lo \
 	mtev_events_rest.lo mtev_net_heartbeat.lo \
+	example_cxx.lo \
 	$(MTEVEDIT_LIB_OBJS) $(EVENTER_LIB_OBJS) \
 	$(MTEV_UTILS_OBJS) $(JSON_LIB_OBJS)
 
@@ -209,12 +211,27 @@ mdb-support/libmtev.so:	mdb-support/libmtev.lo mdb-support/mdb_help.lo
 	  $(CC) $(CPPFLAGS) $(SHCFLAGS) -c $< -o $@ ; \
 	fi
 
+.cpp.lo:
+	$(Q)if [ "`dirname $@`" != "." ] ; then \
+		(cd "`dirname $@`" && $(MAKE) "`basename $@`") ; \
+	else \
+		echo "- compiling $<" ; \
+	  $(CXX) $(CPPFLAGS) $(SHCFLAGS) -fno-exceptions -c $< -o $@ ; \
+	fi
+
 .c.o:
 	$(Q)if [ "`dirname $@`" != "." ] ; then \
 		(cd "`dirname $@`" && $(MAKE) "`basename $@`") ; \
 	else \
 		echo "- compiling $<" ; \
 		$(CC) $(CPPFLAGS) $(CFLAGS) -c $< ; \
+	fi
+.cpp.o:
+	$(Q)if [ "`dirname $@`" != "." ] ; then \
+		(cd "`dirname $@`" && $(MAKE) "`basename $@`") ; \
+	else \
+		echo "- compiling $<" ; \
+		$(CC) $(CPPFLAGS) $(CFLAGS) -fno-exceptions -c $< ; \
 	fi
 
 utils/mtev_atomic_sol_sparcv8plus.o:	utils/mtev_atomic_sol.s
